@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Get current branch
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Get previous branch
+previous=$(git rev-parse --abbrev-ref HEAD@{1})
+
+git checkout $previous
+
+git pull origin $previous
+
+git merge $branch
+
+git push origin $previous

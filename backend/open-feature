@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Get the feature name from the arguments
+feature=$1
+
+# Check if the feature name was provided
+if [ -z "$feature" ]; then
+    echo "Usage: $0 feature-name"
+    exit 1
+fi
+
+# Checkout the branch
+git checkout -b $feature
