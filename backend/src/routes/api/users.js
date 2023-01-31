@@ -30,6 +30,7 @@ const validateSignup = [
   handleValidationErrors,
 ];
 // Sign up
+// POST /api/users
 router.post("/", validateSignup, async (req, res) => {
   const { email, password, username } = req.body;
   const user = await User.signup({ email, username, password });
@@ -40,4 +41,5 @@ router.post("/", validateSignup, async (req, res) => {
     user: user,
   });
 });
+
 module.exports = router;
