@@ -4,7 +4,7 @@ const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User } = require("../../../db/models");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 const validateSignup = [
   check("email")
@@ -56,4 +56,23 @@ router.get("/", requireAuth, async (req, res) => {
   });
 });
 
+// Login user
+// POST /api/users/login
+// TODO: Implement
+
+// Logout user
+// POST /api/users/logout
+// TODO: Implement
+
+// Get all spots owned by current user
+// GET /api/users/spots
+// TODO: Implement
+
+// Get all reviews written by current user
+// GET /api/users/reviews
+// TODO: Implement
+
+// Get all bookings made by current user
+// GET /api/users/bookings
+// TODO: Implement
 module.exports = router;
