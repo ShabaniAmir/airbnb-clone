@@ -305,8 +305,8 @@ Returns all the spots owned (created) by the current user.
 - Require Authentication: true
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: GET
+  - URL: /api/users/spots
   - Body: none
 
 - Successful Response
