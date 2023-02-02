@@ -23,7 +23,47 @@ router.get("/", async (req, res) => {
 
 // Create a spot
 // POST /api/spots
-// TODO: Implement
+const validateSpot = [
+  check("name")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a name for the spot."),
+  check("description")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a description for the spot."),
+  check("price")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a price for the spot.")
+    .isFloat({ min: 0 })
+    .withMessage("Please provide a float value greater than 0 for the price."),
+  check("lat")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a latitude for the spot.")
+    .isFloat()
+    .withMessage("Please provide a float value for the latitude."),
+  check("lng")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a longitude for the spot.")
+    .isFloat()
+    .withMessage("Please provide a float value for the latitude."),
+  check("address")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide an address for the spot."),
+  check("city")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a city for the spot."),
+  check("state")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a state for the spot."),
+  check("country")
+    .exists({ checkFalsy: true })
+    .withMessage("Please provide a country for the spot."),
+  handleValidationErrors,
+];
+router.post("/", [requireAuth, validateSpot], async (req, res) => {
+  const attributes = req.body;
+  const spot = await Spot.create(attributes);
+  return res.json(spot);
+});
 
 // Add image to a spot
 // POST /api/spots/:id/images
