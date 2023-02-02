@@ -19,7 +19,10 @@ router.get("/", async (req, res) => {
 
 // Get a single spot
 // GET /api/spots/:id
-// TODO: Implement
+router.get("/:id", async (req, res) => {
+  const spot = await Spot.findByPk(req.params.id);
+  return res.json(spot);
+});
 
 // Create a spot
 // POST /api/spots
