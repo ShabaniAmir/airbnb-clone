@@ -2,7 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User } = require("../../../db/models");
+const { User, Spot, Booking, Review } = require("../../../db/models");
 
 const router = express.Router({ mergeParams: true });
 
@@ -94,7 +94,17 @@ router.post("/login", validateLogin, async (req, res, next) => {
 
 // Get all spots owned by current user
 // GET /api/users/spots
-// TODO: Implement
+router.get("/spots", requireAuth, async (req, res) => {
+  const { user } = req;
+  const spots = await Spot.findAll({
+    where: {
+      ownerId: user.id,
+    },
+  });
+  return res.json({
+    Spots: spots,
+  });
+});
 
 // Get all reviews written by current user
 // GET /api/users/reviews
