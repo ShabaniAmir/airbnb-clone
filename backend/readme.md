@@ -168,8 +168,8 @@ user's information.
 - Require Authentication: false
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: POST
+  - URL: /api/users
   - Headers:
     - Content-Type: application/json
   - Body:
