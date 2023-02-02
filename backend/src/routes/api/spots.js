@@ -64,6 +64,7 @@ const validateSpot = [
 ];
 router.post("/", [requireAuth, validateSpot], async (req, res) => {
   const attributes = req.body;
+  attributes.ownerId = req.user.id;
   const spot = await Spot.create(attributes);
   return res.json(spot);
 });
