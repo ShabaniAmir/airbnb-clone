@@ -2,7 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User } = require("../../../db/models");
+const { User, Spot } = require("../../../db/models");
 const reviewsRouter = require("./reviews");
 const bookingsRouter = require("./bookings");
 const router = express.Router({ mergeParams: true });
@@ -12,7 +12,10 @@ router.use("/:id/bookings", bookingsRouter);
 
 // Get all spots
 // GET /api/spots
-// TODO: Implement
+router.get("/", async (req, res) => {
+  const spots = await Spot.findAll();
+  return res.json(spots);
+});
 
 // Get a single spot
 // GET /api/spots/:id
