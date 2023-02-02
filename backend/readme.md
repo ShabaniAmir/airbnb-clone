@@ -347,8 +347,8 @@ Returns the details of a spot specified by its id.
 - Require Authentication: false
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: GET
+  - URL: /api/spots/:id
   - Body: none
 
 - Successful Response
