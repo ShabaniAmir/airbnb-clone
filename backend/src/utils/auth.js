@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { jwtConfig } = require("../../config");
-const { User } = require("../../db/models");
+const { User, Spot } = require("../../db/models");
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -64,4 +64,17 @@ const requireAuth = function (req, _res, next) {
   return next(err);
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+// Does user own spot?
+const requireOwnership = async (req, res, next) => {
+  const { id: spotId } = req.params;
+  const spot = await Spot.findByPk(spotId);
+  if (spot.ownerId !== req.user.id) {
+    const err = new Error("Unauthorized");
+    err.title = "Unauthorized";
+    err.errors = ["Unauthorized"];
+    err.status = 401;
+    return next(err);
+  }
+  return next();
+};
+module.exports = { setTokenCookie, restoreUser, requireAuth, requireOwnership };
