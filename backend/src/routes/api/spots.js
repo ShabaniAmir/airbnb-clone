@@ -4,7 +4,7 @@ const { handleValidationErrors } = require("../../utils/validation");
 const {
   setTokenCookie,
   requireAuth,
-  requireOwnership,
+  requireSpotOwnership,
 } = require("../../utils/auth");
 const { User, Spot } = require("../../../db/models");
 const reviewsRouter = require("./reviews");
@@ -85,7 +85,7 @@ router.post("/", [requireAuth, validateSpot], async (req, res) => {
 // PUT /api/spots/:id
 router.put(
   "/:id",
-  [requireAuth, requireOwnership, validateSpot],
+  [requireAuth, requireSpotOwnership, validateSpot],
   async (req, res) => {
     const spot = await Spot.findByPk(req.params.id);
     const attributes = req.body;
@@ -96,7 +96,7 @@ router.put(
 
 // Delete a spot
 // DELETE /api/spots/:id
-router.delete("/:id", [requireAuth, requireOwnership], async (req, res) => {
+router.delete("/:id", [requireAuth, requireSpotOwnership], async (req, res) => {
   const spot = await Spot.findByPk(req.params.id);
   if (!spot) {
     return res.status(404).json({
