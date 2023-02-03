@@ -735,8 +735,8 @@ Returns all the reviews that belong to a spot specified by id.
 - Require Authentication: false
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: GET
+  - URL: /api/spots/:id/reviews
   - Body: none
 
 - Successful Response
