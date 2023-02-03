@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         references: { model: "Spots" },
       },
       stars: DataTypes.INTEGER,
+      review: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
     },
     {
       sequelize,
