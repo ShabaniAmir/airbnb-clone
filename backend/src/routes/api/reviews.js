@@ -67,7 +67,16 @@ router.post("/", [requireAuth, validateReview], async (req, res) => {
 
 // Delete a review for a spot
 // DELETE /api/spots/:id/reviews/:reviewId
-// TODO: implemenet
+router.delete(
+  "/:reviewId",
+  [requireAuth, requireReviewOwnership],
+  async (req, res) => {
+    const reviewId = req.params.reviewId;
+    const review = await Review.findByPk(reviewId);
+    await review.destroy();
+    return res.json({ review });
+  }
+);
 
 // Add an image to a review
 // POST /api/spots/:id/reviews/:reviewId/images
