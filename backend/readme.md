@@ -1015,8 +1015,8 @@ Delete an existing review.
 - Require proper authorization: Review must belong to the current user
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: DELETE
+  - URL: /api/spots/:id/reviews/:reviewId
   - Body: none
 
 - Successful Response
