@@ -636,8 +636,8 @@ Deletes an existing spot.
 - Require proper authorization: Spot must belong to the current user
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: DELETE
+  - URL: /api/spots/:id
   - Body: none
 
 - Successful Response
