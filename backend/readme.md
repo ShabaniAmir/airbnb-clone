@@ -943,8 +943,8 @@ Update and return an existing review.
 - Require proper authorization: Review must belong to the current user
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: PUT
+  - URL: /api/spots/:id/reviews/:reviewId
   - Headers:
     - Content-Type: application/json
   - Body:
