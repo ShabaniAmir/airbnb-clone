@@ -98,6 +98,12 @@ router.put(
 // DELETE /api/spots/:id
 router.delete("/:id", [requireAuth, requireOwnership], async (req, res) => {
   const spot = await Spot.findByPk(req.params.id);
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+      statusCode: 404,
+    });
+  }
   await spot.destroy();
   return res.json({
     message: "Successfully deleted",
