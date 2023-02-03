@@ -1,7 +1,11 @@
 const express = require("express");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
-const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const {
+  setTokenCookie,
+  requireAuth,
+  requireOwnership,
+} = require("../../utils/auth");
 const { User, Spot } = require("../../../db/models");
 const reviewsRouter = require("./reviews");
 const bookingsRouter = require("./bookings");
@@ -79,7 +83,16 @@ router.post("/", [requireAuth, validateSpot], async (req, res) => {
 
 // Update a spot
 // PUT /api/spots/:id
-// TODO: Implement
+router.put(
+  "/:id",
+  [requireAuth, requireOwnership, validateSpot],
+  async (req, res) => {
+    const spot = await Spot.findByPk(req.params.id);
+    const attributes = req.body;
+    await spot.update(attributes);
+    return res.json(spot);
+  }
+);
 
 // Delete a spot
 // DELETE /api/spots/:id
