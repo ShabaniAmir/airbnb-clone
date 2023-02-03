@@ -794,8 +794,8 @@ Create and return a new review for a spot specified by id.
 - Require Authentication: true
 - Request
 
-  - Method: ?
-  - URL: ?
+  - Method: POST
+  - URL: /api/spots/:id/reviews
   - Headers:
     - Content-Type: application/json
   - Body:
