@@ -12,7 +12,21 @@ const router = express.Router({ mergeParams: true });
 
 // Get all reviews for a spot
 // GET /api/spots/:id/reviews
-// TODO: Implement
+router.get("/", async (req, res) => {
+  const spotId = req.params.id;
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) {
+    return res.status(404).json({
+      message: "Spot couldn't be found",
+      statusCode: 404,
+    });
+  }
+  const reviews = await Review.findAll({
+    where: { spotId },
+    include: User,
+  });
+  return res.json({ Reviews: reviews });
+});
 
 // Create a review for a spot
 // POST /api/spots/:id/reviews
