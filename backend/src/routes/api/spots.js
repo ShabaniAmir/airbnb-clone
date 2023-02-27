@@ -158,8 +158,14 @@ router.post("/:id/bookings", requireAuth, async (req, res) => {
 // Get all spots
 // GET /api/spots
 router.get("/", async (req, res) => {
-  const spots = await Spot.findAll();
-  return res.json({ Spots: spots });
+  const { page, size } = req.query;
+
+  const spots = await Spot.findAll({
+    limit: size || 10,
+    offset: page * size || 0,
+  });
+
+  return res.json({ Spots: spots, page, size });
 });
 
 // Get all spots owned by current user
