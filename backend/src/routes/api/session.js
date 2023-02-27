@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { User } = require("../../../db/models");
+const { requireAuth } = require("../../utils/auth");
 
 const router = express.Router();
 
@@ -24,17 +25,27 @@ router.post("/", validateLogin, async (req, res, next) => {
   const user = await User.login({ credential, password });
 
   if (!user) {
-    const err = new Error("Login failed");
-    err.status = 401;
-    err.title = "Login failed";
-    err.errors = ["The provided credentials were invalid."];
-    return next(err);
+    return res.status(401).json({
+      message: "Invalid credentials",
+      statusCode: 401,
+    });
   }
 
-  await setTokenCookie(res, user);
+  const token = await setTokenCookie(res, user);
+  user.dataValues["token"] = token;
 
   return res.json({
-    user: user,
+    user: { ...user.dataValues },
+  });
+});
+
+// Get current user
+router.get("/", requireAuth, async (req, res) => {
+  const { user } = req;
+  const userRecord = await User.findByPk(user.id);
+  // TODO: remove unwanted fields from user object
+  return res.json({
+    user: userRecord,
   });
 });
 

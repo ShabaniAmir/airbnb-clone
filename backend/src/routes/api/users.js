@@ -29,8 +29,30 @@ const validateSignup = [
 // Sign up
 // POST /api/users
 router.post("/", validateSignup, async (req, res) => {
+  console.log("signing up");
   const { email, password, username, firstName, lastName } = req.body;
   console.log({ email, password, username, firstName, lastName });
+
+  // Check if email is already in use
+  const emailExists = await User.findOne({ where: { email } });
+  if (emailExists) {
+    return res.status(403).json({
+      message: "User already exists",
+      statusCode: 403,
+      errors: ["User with that email already exists"],
+    });
+  }
+
+  // Check if username is already in use
+  const usernameExists = await User.findOne({ where: { username } });
+  if (usernameExists) {
+    return res.status(403).json({
+      message: "User already exists",
+      statusCode: 403,
+      errors: ["User with that username already exists"],
+    });
+  }
+
   const user = await User.signup({
     email,
     username,
@@ -39,10 +61,17 @@ router.post("/", validateSignup, async (req, res) => {
     lastName,
   });
 
-  await setTokenCookie(res, user);
+  const token = await setTokenCookie(res, user);
 
   return res.json({
-    user: user,
+    user: {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+      token: token,
+    },
   });
 });
 
@@ -50,9 +79,10 @@ router.post("/", validateSignup, async (req, res) => {
 // GET /api/users
 router.get("/", requireAuth, async (req, res) => {
   const { user } = req;
+  const userRecord = await User.findByPk(user.id);
   // TODO: remove unwanted fields from user object
   return res.json({
-    user,
+    user: userRecord,
   });
 });
 
@@ -105,10 +135,6 @@ router.get("/spots", requireAuth, async (req, res) => {
     Spots: spots,
   });
 });
-
-// Get all reviews written by current user
-// GET /api/users/reviews
-// TODO: Implement
 
 // Get all bookings made by current user
 // GET /api/users/bookings
